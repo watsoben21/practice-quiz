@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; background: #f9f9f9; }
+        .quiz-container { background: #fff; padding: 2em; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+        h1 { text-align: center; }
+        .question { margin-bottom: 1.5em; }
+        label { display: block; margin-bottom: 0.5em; font-weight: bold; }
+        input[type="text"] { width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid #ccc; }
+        button { background: #0078d7; color: #fff; border: none; padding: 0.75em 2em; border-radius: 4px; font-size: 1em; cursor: pointer; }
+        button:disabled { background: #aaa; }
+        .thanks { text-align: center; font-size: 1.2em; color: #2d7a2d; margin-top: 2em; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Practice Quiz</h1>
+        <form id="quiz-form">
+            <div class="question">
+                <label for="q1">1. Consider the line given by the equation <strong>y = 2x + 1</strong>. Is the point <strong>(3, 7)</strong> on this line? (Answer "yes" or "no")</label>
+                <input type="text" id="q1" name="q1" required autocomplete="off">
+            </div>
+            <div class="question">
+                <label for="q2">2. On the coordinate plane below, place the point <strong>(3, 7)</strong> by clicking where you think it belongs. You will be told if you are correct or not.</label>
+                <div style="margin: 1em 0;">
+                    <canvas id="plane" width="320" height="320" style="border:1px solid #888; background:#f4f4f4;"></canvas>
+                </div>
+                <div id="point-feedback" style="font-weight:bold; color:#007a00; display:none;"></div>
+            </div>
+            <div class="question">
+                <label for="q3">3. What is the chemical symbol for water?</label>
+                <input type="text" id="q3" name="q3" required autocomplete="off">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        <div class="thanks" id="thanks-message" style="display:none;">
+            Thank you for taking the quiz!
+        </div>
+    </div>
+    <script>
+        // Quiz submit handler
+        document.getElementById('quiz-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('quiz-form').style.display = 'none';
+            document.getElementById('thanks-message').style.display = 'block';
+        });
+
+        // Coordinate plane logic for question 2
+        const canvas = document.getElementById('plane');
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+        const xMin = 0, xMax = 10, yMin = 0, yMax = 10;
+        const pxPerUnit = width / (xMax - xMin);
+
+        // Draw axes and labels
+        function drawPlane() {
+            ctx.clearRect(0, 0, width, height);
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            // Axes
+            ctx.beginPath();
+            ctx.moveTo(0, height - pxPerUnit * yMin);
+            ctx.lineTo(width, height - pxPerUnit * yMin);
+            ctx.moveTo(pxPerUnit * -xMin, 0);
+            ctx.lineTo(pxPerUnit * -xMin, height);
+            ctx.stroke();
+            // Grid and labels
+            ctx.font = '12px Arial';
+            ctx.fillStyle = '#333';
+            ctx.textAlign = 'center';
+            for (let i = xMin; i <= xMax; i++) {
+                let x = pxPerUnit * (i - xMin);
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.strokeStyle = '#eee';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                ctx.fillStyle = '#333';
+                ctx.fillText(i, x, height - 5);
+            }
+            for (let j = yMin; j <= yMax; j++) {
+                let y = height - pxPerUnit * (j - yMin);
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.strokeStyle = '#eee';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                ctx.fillStyle = '#333';
+                if (j !== 0) ctx.fillText(j, 15, y + 4);
+            }
+            // Redraw axes on top
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, height - pxPerUnit * yMin);
+            ctx.lineTo(width, height - pxPerUnit * yMin);
+            ctx.moveTo(pxPerUnit * -xMin, 0);
+            ctx.lineTo(pxPerUnit * -xMin, height);
+            ctx.stroke();
+        }
+
+        function drawPoint(x, y, color = '#d00') {
+            const px = pxPerUnit * (x - xMin);
+            const py = height - pxPerUnit * (y - yMin);
+            ctx.beginPath();
+            ctx.arc(px, py, 7, 0, 2 * Math.PI);
+            ctx.fillStyle = color;
+            ctx.fill();
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        drawPlane();
+
+        // Handle click
+        canvas.addEventListener('click', function(e) {
+            drawPlane();
+            const rect = canvas.getBoundingClientRect();
+            const xClick = e.clientX - rect.left;
+            const yClick = e.clientY - rect.top;
+            // Convert to coordinate system
+            const x = Math.round(xClick / pxPerUnit + xMin);
+            const y = Math.round((height - yClick) / pxPerUnit + yMin);
+            drawPoint(x, y);
+            // Check if correct
+            const correctX = 3, correctY = 7;
+            const feedback = document.getElementById('point-feedback');
+            if (x === correctX && y === correctY) {
+                feedback.textContent = 'Correct! You placed the point (3, 7).';
+                feedback.style.color = '#007a00';
+            } else {
+                feedback.textContent = `Incorrect. You placed (${x}, ${y}). Try again!`;
+                feedback.style.color = '#d00';
+            }
+            feedback.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
