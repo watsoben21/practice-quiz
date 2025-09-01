@@ -1,3 +1,11 @@
+            <div class="question">
+                <label for="q5">5. The line segment on the graph below is part of the line <strong>y = 1.5x - 2</strong>. What is the slope of this line?</label>
+                <div style="margin: 1em 0;">
+                    <canvas id="eqn-slope-plane" width="320" height="320" style="border:1px solid #888; background:#f4f4f4;"></canvas>
+                </div>
+                <input type="text" id="q5" name="q5" required autocomplete="off">
+                <div id="eqn-slope-feedback" class="feedback" style="display:none;"></div>
+            </div>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,21 +13,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Practice Quiz</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 2em; background: #f9f9f9; }
-        .quiz-container { background: #fff; padding: 2em; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
-        h1 { text-align: center; }
-        .question { margin-bottom: 1.5em; }
-        label { display: block; margin-bottom: 0.5em; font-weight: bold; }
-        input[type="text"] { width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid #ccc; }
-        button { background: #0078d7; color: #fff; border: none; padding: 0.75em 2em; border-radius: 4px; font-size: 1em; cursor: pointer; }
-        button:disabled { background: #aaa; }
-        .thanks { text-align: center; font-size: 1.2em; color: #2d7a2d; margin-top: 2em; }
+        body {
+            font-family: Times New Roman, Times, serif;
+            background: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        <div class="quiz-container">
+            <h1>Practice Quiz</h1>
+            <form id="quiz-form" autocomplete="off">
+                <div class="question">
+                    <label for="q1">1. Consider the line given by the equation <strong>y = 2x + 1</strong>. Is the point <strong>(3, 7)</strong> on this line? (Answer "yes" or "no")</label>
+                    <input type="text" id="q1" name="q1" required autocomplete="off">
+                </div>
+                <div class="question">
+                    <label for="q2">2. On the coordinate plane below, place the point <strong>(3, 7)</strong> by clicking where you think it belongs. You will be told if you are correct or not.</label>
+                    <div style="margin: 1em 0;">
+                        <canvas id="plane" width="320" height="320" style="border:1px solid #888; background:#f4f4f4;"></canvas>
+                    </div>
+                    <div id="point-feedback" class="feedback" style="display:none;"></div>
+                </div>
+                <div class="question">
+                    <label for="q3">3. On the coordinate plane below, is the slope of the line segment <strong>positive</strong> or <strong>negative</strong>? Type your answer below.</label>
+                    <div style="margin: 1em 0;">
+                        <canvas id="line-plane" width="320" height="320" style="border:1px solid #888; background:#f4f4f4;"></canvas>
+                    </div>
+                    <input type="text" id="q3" name="q3" required autocomplete="off">
+                    <div id="slope-feedback" class="feedback" style="display:none;"></div>
+                </div>
+                <div class="question">
+                    <label for="q4">4. On the graph below, what is the slope of the line segment? (You may answer as a fraction or decimal.)</label>
+                    <div style="margin: 1em 0;">
+                        <canvas id="slope-plane" width="320" height="320" style="border:1px solid #888; background:#f4f4f4;"></canvas>
+                    </div>
+                    <input type="text" id="q4" name="q4" required autocomplete="off">
+                    <div id="slope-value-feedback" class="feedback" style="display:none;"></div>
+                </div>
+                <div class="question">
+                    <label for="q5">5. The line segment on the graph below is part of the line <strong>y = 1.5x - 2</strong>. What is the slope of this line?</label>
+                    <div style="margin: 1em 0;">
+                        <canvas id="eqn-slope-plane" width="340" height="340" style="border:2px solid #333; background:#fff;"></canvas>
+                    </div>
+                    <input type="text" id="q5" name="q5" required autocomplete="off">
+                    <div id="eqn-slope-feedback" class="feedback" style="display:none;"></div>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+            <div class="thanks" id="thanks-message" style="display:none;">
+                <span id="score-message"></span>
+            </div>
+        </div>
+        }
+        .thanks {
+            text-align: center;
+            font-size: 1.2em;
+            color: #222;
+            margin-top: 2em;
+            font-family: Georgia, serif;
+        }
+        .feedback {
+            font-weight: bold;
+            margin-top: 0.5em;
+        }
     </style>
 </head>
 <body>
     <div class="quiz-container">
         <h1>Practice Quiz</h1>
-        <form id="quiz-form">
+    <form id="quiz-form" autocomplete="off">
             <div class="question">
                 <label for="q1">1. Consider the line given by the equation <strong>y = 2x + 1</strong>. Is the point <strong>(3, 7)</strong> on this line? (Answer "yes" or "no")</label>
                 <input type="text" id="q1" name="q1" required autocomplete="off">
@@ -29,24 +90,169 @@
                 <div style="margin: 1em 0;">
                     <canvas id="plane" width="320" height="320" style="border:1px solid #888; background:#f4f4f4;"></canvas>
                 </div>
-                <div id="point-feedback" style="font-weight:bold; color:#007a00; display:none;"></div>
+                <div id="point-feedback" class="feedback" style="display:none;"></div>
             </div>
             <div class="question">
-                <label for="q3">3. What is the chemical symbol for water?</label>
+                <label for="q3">3. On the coordinate plane below, is the slope of the line segment <strong>positive</strong> or <strong>negative</strong>? Type your answer below.</label>
+                <div style="margin: 1em 0;">
+                    <canvas id="line-plane" width="320" height="320" style="border:1px solid #888; background:#f4f4f4;"></canvas>
+                </div>
                 <input type="text" id="q3" name="q3" required autocomplete="off">
+                <div id="slope-feedback" class="feedback" style="display:none;"></div>
+            </div>
+            <div class="question">
+                <label for="q4">4. On the graph below, what is the slope of the line segment? (You may answer as a fraction or decimal.)</label>
+                <div style="margin: 1em 0;">
+                    <canvas id="slope-plane" width="320" height="320" style="border:1px solid #888; background:#f4f4f4;"></canvas>
+                </div>
+                <input type="text" id="q4" name="q4" required autocomplete="off">
+                <div id="slope-value-feedback" class="feedback" style="display:none;"></div>
             </div>
             <button type="submit">Submit</button>
         </form>
         <div class="thanks" id="thanks-message" style="display:none;">
-            Thank you for taking the quiz!
+            <span id="score-message"></span>
         </div>
     </div>
     <script>
         // Quiz submit handler
+        // Track score and answer state
+        let score = 0;
+        let answered = [false, false, false, false, false];
+
+        // Question 1
+        document.getElementById('q1').addEventListener('blur', function() {
+            if (answered[0]) return;
+            answered[0] = true;
+            this.disabled = true;
+            const val = this.value.trim().toLowerCase();
+            if (val === 'yes') {
+                score++;
+            }
+        });
+
+        // Question 2
+        // Handled by click event, so update to only allow one try
+        let q2Answered = false;
+        canvas.addEventListener('click', function(e) {
+            if (q2Answered) return;
+            q2Answered = true;
+            canvas.style.pointerEvents = 'none';
+            drawPlane();
+            const rect = canvas.getBoundingClientRect();
+            const xClick = e.clientX - rect.left;
+            const yClick = e.clientY - rect.top;
+            const x = Math.round(xClick / pxPerUnit + xMin);
+            const y = Math.round((height - yClick) / pxPerUnit + yMin);
+            drawPoint(x, y);
+            const correctX = 3, correctY = 7;
+            const feedback = document.getElementById('point-feedback');
+            if (x === correctX && y === correctY) {
+                feedback.textContent = 'Correct! You placed the point (3, 7).';
+                feedback.style.color = '#007a00';
+                score++;
+            } else {
+                feedback.textContent = `Incorrect. You placed (${x}, ${y}).`;
+                feedback.style.color = '#d00';
+            }
+            feedback.style.display = 'block';
+        });
+
+        // Question 3
+        document.getElementById('q3').addEventListener('blur', function() {
+            if (answered[2]) return;
+            answered[2] = true;
+            this.disabled = true;
+            const answer = this.value.trim().toLowerCase();
+            const slope = (y2 - y1) / (x2 - x1);
+            const correct = slope > 0 ? 'positive' : 'negative';
+            const feedback = document.getElementById('slope-feedback');
+            if (answer === 'positive' || answer === 'negative') {
+                if (answer === correct) {
+                    score++;
+                    feedback.textContent = 'Correct!';
+                    feedback.style.color = '#007a00';
+                    feedback.style.display = 'block';
+                } else {
+                    feedback.textContent = `Incorrect. The slope is ${correct}.`;
+                    feedback.style.display = 'block';
+                }
+            } else {
+                feedback.textContent = '';
+                feedback.style.display = 'none';
+            }
+        });
+
+        // Question 4
+        document.getElementById('q4').addEventListener('blur', function() {
+            if (answered[3]) return;
+            answered[3] = true;
+            this.disabled = true;
+            const answer = this.value;
+            const slope = (sy2 - sy1) / (sx2 - sx1);
+            const parsed = parseSlopeInput(answer);
+            const feedback = document.getElementById('slope-value-feedback');
+            if (parsed !== null) {
+                if (Math.abs(parsed - slope) < 0.01) {
+                    score++;
+                    feedback.textContent = 'Correct!';
+                    feedback.style.color = '#007a00';
+                    feedback.style.display = 'block';
+                } else {
+                    feedback.textContent = `Incorrect.`;
+                    feedback.style.color = '#d00';
+                    feedback.style.display = 'block';
+                }
+            } else {
+                feedback.textContent = '';
+                feedback.style.display = 'none';
+            }
+        });
+
+        // Question 5
+        document.getElementById('q5').addEventListener('blur', function() {
+            if (answered[4]) return;
+            answered[4] = true;
+            this.disabled = true;
+            const answer = this.value.trim();
+            let parsed = null;
+            if (answer.includes('/')) {
+                let parts = answer.split('/');
+                if (parts.length === 2) {
+                    let num = parseFloat(parts[0]);
+                    let denom = parseFloat(parts[1]);
+                    if (!isNaN(num) && !isNaN(denom) && denom !== 0) {
+                        parsed = num / denom;
+                    }
+                }
+            } else {
+                let num = parseFloat(answer);
+                if (!isNaN(num)) parsed = num;
+            }
+            const feedback = document.getElementById('eqn-slope-feedback');
+            if (parsed !== null) {
+                if (Math.abs(parsed - 1.5) < 0.01) {
+                    score++;
+                    feedback.textContent = 'Correct!';
+                    feedback.style.color = '#007a00';
+                    feedback.style.display = 'block';
+                } else {
+                    feedback.textContent = 'Incorrect.';
+                    feedback.style.color = '#d00';
+                    feedback.style.display = 'block';
+                }
+            } else {
+                feedback.textContent = '';
+                feedback.style.display = 'none';
+            }
+        });
+
+        // On submit, show score
         document.getElementById('quiz-form').addEventListener('submit', function(e) {
             e.preventDefault();
             document.getElementById('quiz-form').style.display = 'none';
             document.getElementById('thanks-message').style.display = 'block';
+            document.getElementById('score-message').textContent = `Your score: ${score} out of 5.`;
         });
 
         // Coordinate plane logic for question 2
@@ -141,6 +347,240 @@
                 feedback.style.color = '#d00';
             }
             feedback.style.display = 'block';
+        });
+        // Question 3: Random line segment and slope check
+        function randomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        const lineCanvas = document.getElementById('line-plane');
+        const lineCtx = lineCanvas.getContext('2d');
+        const lWidth = lineCanvas.width;
+        const lHeight = lineCanvas.height;
+        const lxMin = 0, lxMax = 10, lyMin = 0, lyMax = 10;
+        const lPxPerUnit = lWidth / (lxMax - lxMin);
+
+        // Generate two random points with different x values
+        let x1 = randomInt(1, 4), y1 = randomInt(2, 8);
+        let x2 = randomInt(6, 9), y2 = randomInt(2, 8);
+        // 50% chance to swap y1/y2 to get negative slope
+        if (Math.random() < 0.5) {
+            let temp = y1;
+            y1 = y2;
+            y2 = temp;
+        }
+
+        function drawLinePlane() {
+            // Draw grid and axes
+            lineCtx.clearRect(0, 0, lWidth, lHeight);
+            lineCtx.strokeStyle = '#333';
+            lineCtx.lineWidth = 2;
+            // Axes
+            lineCtx.beginPath();
+            lineCtx.moveTo(0, lHeight - lPxPerUnit * lyMin);
+            lineCtx.lineTo(lWidth, lHeight - lPxPerUnit * lyMin);
+            lineCtx.moveTo(lPxPerUnit * -lxMin, 0);
+            lineCtx.lineTo(lPxPerUnit * -lxMin, lHeight);
+            lineCtx.stroke();
+            // Grid and labels
+            lineCtx.font = '12px Arial';
+            lineCtx.fillStyle = '#333';
+            lineCtx.textAlign = 'center';
+            for (let i = lxMin; i <= lxMax; i++) {
+                let x = lPxPerUnit * (i - lxMin);
+                lineCtx.beginPath();
+                lineCtx.moveTo(x, 0);
+                lineCtx.lineTo(x, lHeight);
+                lineCtx.strokeStyle = '#eee';
+                lineCtx.lineWidth = 1;
+                lineCtx.stroke();
+                lineCtx.fillStyle = '#333';
+                lineCtx.fillText(i, x, lHeight - 5);
+            }
+            for (let j = lyMin; j <= lyMax; j++) {
+                let y = lHeight - lPxPerUnit * (j - lyMin);
+                lineCtx.beginPath();
+                lineCtx.moveTo(0, y);
+                lineCtx.lineTo(lWidth, y);
+                lineCtx.strokeStyle = '#eee';
+                lineCtx.lineWidth = 1;
+                lineCtx.stroke();
+                lineCtx.fillStyle = '#333';
+                if (j !== 0) lineCtx.fillText(j, 15, y + 4);
+            }
+            // Redraw axes on top
+            lineCtx.strokeStyle = '#333';
+            lineCtx.lineWidth = 2;
+            lineCtx.beginPath();
+            lineCtx.moveTo(0, lHeight - lPxPerUnit * lyMin);
+            lineCtx.lineTo(lWidth, lHeight - lPxPerUnit * lyMin);
+            lineCtx.moveTo(lPxPerUnit * -lxMin, 0);
+            lineCtx.lineTo(lPxPerUnit * -lxMin, lHeight);
+            lineCtx.stroke();
+            // Draw line segment
+            let px1 = lPxPerUnit * (x1 - lxMin);
+            let py1 = lHeight - lPxPerUnit * (y1 - lyMin);
+            let px2 = lPxPerUnit * (x2 - lxMin);
+            let py2 = lHeight - lPxPerUnit * (y2 - lyMin);
+            lineCtx.beginPath();
+            lineCtx.moveTo(px1, py1);
+            lineCtx.lineTo(px2, py2);
+            lineCtx.strokeStyle = '#0078d7';
+            lineCtx.lineWidth = 3;
+            lineCtx.stroke();
+            // Draw endpoints
+            lineCtx.beginPath();
+            lineCtx.arc(px1, py1, 7, 0, 2 * Math.PI);
+            lineCtx.arc(px2, py2, 7, 0, 2 * Math.PI);
+            lineCtx.fillStyle = '#d00';
+            lineCtx.fill();
+            lineCtx.strokeStyle = '#333';
+            lineCtx.lineWidth = 2;
+            lineCtx.stroke();
+        }
+
+        drawLinePlane();
+
+        // Slope check on input blur
+        document.getElementById('q3').addEventListener('blur', function() {
+            const answer = this.value.trim().toLowerCase();
+            const slope = (y2 - y1) / (x2 - x1);
+            const correct = slope > 0 ? 'positive' : 'negative';
+            const feedback = document.getElementById('slope-feedback');
+            if (answer === 'positive' || answer === 'negative') {
+                if (answer === correct) {
+                    feedback.textContent = '';
+                    feedback.style.display = 'none';
+                } else {
+                    feedback.textContent = `Incorrect. The slope is ${correct}.`;
+                    feedback.style.display = 'block';
+                }
+            } else {
+                feedback.textContent = '';
+                feedback.style.display = 'none';
+            }
+        });
+        // Question 4: Slope value
+        const slopeCanvas = document.getElementById('slope-plane');
+        const slopeCtx = slopeCanvas.getContext('2d');
+        const sWidth = slopeCanvas.width;
+        const sHeight = slopeCanvas.height;
+        const sxMin = 0, sxMax = 10, syMin = 0, syMax = 10;
+        const sPxPerUnit = sWidth / (sxMax - sxMin);
+
+        // Generate two random points for slope (different x)
+        let sx1 = randomInt(2, 5), sy1 = randomInt(2, 8);
+        let sx2 = randomInt(6, 9), sy2 = randomInt(2, 8);
+        // Ensure not vertical
+        if (sx1 === sx2) sx2 = sx1 + 1;
+
+        function drawSlopePlane() {
+            slopeCtx.clearRect(0, 0, sWidth, sHeight);
+            slopeCtx.strokeStyle = '#333';
+            slopeCtx.lineWidth = 2;
+            // Axes
+            slopeCtx.beginPath();
+            slopeCtx.moveTo(0, sHeight - sPxPerUnit * syMin);
+            slopeCtx.lineTo(sWidth, sHeight - sPxPerUnit * syMin);
+            slopeCtx.moveTo(sPxPerUnit * -sxMin, 0);
+            slopeCtx.lineTo(sPxPerUnit * -sxMin, sHeight);
+            slopeCtx.stroke();
+            // Grid and labels
+            slopeCtx.font = '12px Arial';
+            slopeCtx.fillStyle = '#333';
+            slopeCtx.textAlign = 'center';
+            for (let i = sxMin; i <= sxMax; i++) {
+                let x = sPxPerUnit * (i - sxMin);
+                slopeCtx.beginPath();
+                slopeCtx.moveTo(x, 0);
+                slopeCtx.lineTo(x, sHeight);
+                slopeCtx.strokeStyle = '#eee';
+                slopeCtx.lineWidth = 1;
+                slopeCtx.stroke();
+                slopeCtx.fillStyle = '#333';
+                slopeCtx.fillText(i, x, sHeight - 5);
+            }
+            for (let j = syMin; j <= syMax; j++) {
+                let y = sHeight - sPxPerUnit * (j - syMin);
+                slopeCtx.beginPath();
+                slopeCtx.moveTo(0, y);
+                slopeCtx.lineTo(sWidth, y);
+                slopeCtx.strokeStyle = '#eee';
+                slopeCtx.lineWidth = 1;
+                slopeCtx.stroke();
+                slopeCtx.fillStyle = '#333';
+                if (j !== 0) slopeCtx.fillText(j, 15, y + 4);
+            }
+            // Redraw axes on top
+            slopeCtx.strokeStyle = '#333';
+            slopeCtx.lineWidth = 2;
+            slopeCtx.beginPath();
+            slopeCtx.moveTo(0, sHeight - sPxPerUnit * syMin);
+            slopeCtx.lineTo(sWidth, sHeight - sPxPerUnit * syMin);
+            slopeCtx.moveTo(sPxPerUnit * -sxMin, 0);
+            slopeCtx.lineTo(sPxPerUnit * -sxMin, sHeight);
+            slopeCtx.stroke();
+            // Draw line segment
+            let spx1 = sPxPerUnit * (sx1 - sxMin);
+            let spy1 = sHeight - sPxPerUnit * (sy1 - syMin);
+            let spx2 = sPxPerUnit * (sx2 - sxMin);
+            let spy2 = sHeight - sPxPerUnit * (sy2 - syMin);
+            slopeCtx.beginPath();
+            slopeCtx.moveTo(spx1, spy1);
+            slopeCtx.lineTo(spx2, spy2);
+            slopeCtx.strokeStyle = '#0078d7';
+            slopeCtx.lineWidth = 3;
+            slopeCtx.stroke();
+            // Draw endpoints
+            slopeCtx.beginPath();
+            slopeCtx.arc(spx1, spy1, 7, 0, 2 * Math.PI);
+            slopeCtx.arc(spx2, spy2, 7, 0, 2 * Math.PI);
+            slopeCtx.fillStyle = '#d00';
+            slopeCtx.fill();
+            slopeCtx.strokeStyle = '#333';
+            slopeCtx.lineWidth = 2;
+            slopeCtx.stroke();
+        }
+
+        drawSlopePlane();
+
+        // Accept fraction or decimal
+        function parseSlopeInput(val) {
+            val = val.trim();
+            if (val.includes('/')) {
+                let parts = val.split('/');
+                if (parts.length === 2) {
+                    let num = parseFloat(parts[0]);
+                    let denom = parseFloat(parts[1]);
+                    if (!isNaN(num) && !isNaN(denom) && denom !== 0) {
+                        return num / denom;
+                    }
+                }
+            }
+            let num = parseFloat(val);
+            if (!isNaN(num)) return num;
+            return null;
+        }
+
+        document.getElementById('q4').addEventListener('input', function() {
+            const answer = this.value;
+            const slope = (sy2 - sy1) / (sx2 - sx1);
+            const parsed = parseSlopeInput(answer);
+            const feedback = document.getElementById('slope-value-feedback');
+            if (parsed !== null) {
+                // Accept small rounding error
+                if (Math.abs(parsed - slope) < 0.01) {
+                    feedback.textContent = 'Correct!';
+                    feedback.style.color = '#007a00';
+                    feedback.style.display = 'block';
+                } else {
+                    feedback.textContent = `Incorrect. Try again.`;
+                    feedback.style.color = '#d00';
+                    feedback.style.display = 'block';
+                }
+            } else {
+                feedback.textContent = '';
+                feedback.style.display = 'none';
+            }
         });
     </script>
 </body>
